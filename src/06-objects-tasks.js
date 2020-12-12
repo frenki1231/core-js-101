@@ -119,32 +119,838 @@ function fromJSON(proto, json) {
  */
 
 const cssSelectorBuilder = {
-  element(/* value */) {
-    throw new Error('Not implemented');
+
+  element(value) {
+    const obj = {
+      errorFirst: 'Element, id and pseudo-element should not occur more then one time inside the selector',
+      errorSecond: 'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element',
+      elementResult: undefined,
+      idResult: undefined,
+      classResult: [],
+      attrResult: [],
+      pseudoClassResult: [],
+      pseudoElementResult: undefined,
+      combineResult: undefined,
+      element(value1) {
+        if (this.elementResult !== undefined) throw Error(this.errorFirst);
+        if (this.idResult !== undefined) {
+          throw Error(this.errorSecond);
+        } else if (this.classResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.attrResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.elementResult = value1;
+        return this;
+      },
+      id(value1) {
+        if (this.idResult !== undefined) throw Error(this.errorFirst);
+        if (this.classResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.attrResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.idResult = `#${value1}`;
+        return this;
+      },
+
+      class(value1) {
+        if (this.attrResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.classResult.push(`.${value1}`);
+        return this;
+      },
+
+      attr(value1) {
+        if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.attrResult.push(`[${value1}]`);
+        return this;
+      },
+
+      pseudoClass(value1) {
+        if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.pseudoClassResult.push(`:${value1}`);
+        return this;
+      },
+
+      pseudoElement(value1) {
+        if (this.pseudoElementResult !== undefined) throw Error(this.errorFirst);
+        this.pseudoElementResult = `::${value1}`;
+        return this;
+      },
+
+      combine(selector1, combinator, selector2) {
+        this.combineResult = `${selector1.stringify()} ${combinator} ${selector2.stringify()}`;
+        return this;
+      },
+      stringify() {
+        let result = '';
+        if (this.elementResult !== undefined) {
+          result += this.elementResult;
+          this.elementResult = undefined;
+        }
+        if (this.idResult !== undefined) {
+          result += this.idResult;
+          this.idResult = undefined;
+        }
+        if (this.classResult.length !== 0) {
+          result += this.classResult.join('');
+          this.classResult = [];
+        }
+        if (this.attrResult.length !== 0) {
+          result += this.attrResult.join('');
+          this.attrResult = [];
+        }
+        if (this.pseudoClassResult.length !== 0) {
+          result += this.pseudoClassResult.join('');
+          this.pseudoClassResult = [];
+        }
+        if (this.pseudoElementResult !== undefined) {
+          result += this.pseudoElementResult;
+          this.pseudoElementResult = undefined;
+        }
+        if (this.combineResult !== undefined) {
+          result += this.combineResult;
+          this.combineResult = undefined;
+        }
+        return result;
+      },
+    };
+    obj.elementResult = value;
+    return obj;
   },
 
-  id(/* value */) {
-    throw new Error('Not implemented');
+  id(value) {
+    const obj = {
+      errorFirst: 'Element, id and pseudo-element should not occur more then one time inside the selector',
+      errorSecond: 'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element',
+      elementResult: undefined,
+      idResult: undefined,
+      classResult: [],
+      attrResult: [],
+      pseudoClassResult: [],
+      pseudoElementResult: undefined,
+      combineResult: undefined,
+      element(value1) {
+        if (this.elementResult !== undefined) throw Error(this.errorFirst);
+        if (this.idResult !== undefined) {
+          throw Error(this.errorSecond);
+        } else if (this.classResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.attrResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.elementResult = value1;
+        return this;
+      },
+      id(value1) {
+        if (this.idResult !== undefined) throw Error(this.errorFirst);
+        if (this.classResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.attrResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.idResult = `#${value1}`;
+        return this;
+      },
+
+      class(value1) {
+        if (this.attrResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.classResult.push(`.${value1}`);
+        return this;
+      },
+
+      attr(value1) {
+        if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.attrResult.push(`[${value1}]`);
+        return this;
+      },
+
+      pseudoClass(value1) {
+        if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.pseudoClassResult.push(`:${value1}`);
+        return this;
+      },
+
+      pseudoElement(value1) {
+        if (this.pseudoElementResult !== undefined) throw Error(this.errorFirst);
+        this.pseudoElementResult = `::${value1}`;
+        return this;
+      },
+
+      combine(selector1, combinator, selector2) {
+        this.combineResult = `${selector1.stringify()} ${combinator} ${selector2.stringify()}`;
+        return this;
+      },
+      stringify() {
+        let result = '';
+        if (this.elementResult !== undefined) {
+          result += this.elementResult;
+          this.elementResult = undefined;
+        }
+        if (this.idResult !== undefined) {
+          result += this.idResult;
+          this.idResult = undefined;
+        }
+        if (this.classResult.length !== 0) {
+          result += this.classResult.join('');
+          this.classResult = [];
+        }
+        if (this.attrResult.length !== 0) {
+          result += this.attrResult.join('');
+          this.attrResult = [];
+        }
+        if (this.pseudoClassResult.length !== 0) {
+          result += this.pseudoClassResult.join('');
+          this.pseudoClassResult = [];
+        }
+        if (this.pseudoElementResult !== undefined) {
+          result += this.pseudoElementResult;
+          this.pseudoElementResult = undefined;
+        }
+        if (this.combineResult !== undefined) {
+          result += this.combineResult;
+          this.combineResult = undefined;
+        }
+        return result;
+      },
+    };
+    obj.idResult = `#${value}`;
+    return obj;
   },
 
-  class(/* value */) {
-    throw new Error('Not implemented');
+  class(value) {
+    const obj = {
+      errorFirst: 'Element, id and pseudo-element should not occur more then one time inside the selector',
+      errorSecond: 'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element',
+      elementResult: undefined,
+      idResult: undefined,
+      classResult: [],
+      attrResult: [],
+      pseudoClassResult: [],
+      pseudoElementResult: undefined,
+      combineResult: undefined,
+      element(value1) {
+        if (this.elementResult !== undefined) throw Error(this.errorFirst);
+        if (this.idResult !== undefined) {
+          throw Error(this.errorSecond);
+        } else if (this.classResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.attrResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.elementResult = value1;
+        return this;
+      },
+      id(value1) {
+        if (this.idResult !== undefined) throw Error(this.errorFirst);
+        if (this.classResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.attrResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.idResult = `#${value1}`;
+        return this;
+      },
+
+      class(value1) {
+        if (this.attrResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.classResult.push(`.${value1}`);
+        return this;
+      },
+
+      attr(value1) {
+        if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.attrResult.push(`[${value1}]`);
+        return this;
+      },
+
+      pseudoClass(value1) {
+        if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.pseudoClassResult.push(`:${value1}`);
+        return this;
+      },
+
+      pseudoElement(value1) {
+        if (this.pseudoElementResult !== undefined) throw Error(this.errorFirst);
+        this.pseudoElementResult = `::${value1}`;
+        return this;
+      },
+
+      combine(selector1, combinator, selector2) {
+        this.combineResult = `${selector1.stringify()} ${combinator} ${selector2.stringify()}`;
+        return this;
+      },
+      stringify() {
+        let result = '';
+        if (this.elementResult !== undefined) {
+          result += this.elementResult;
+          this.elementResult = undefined;
+        }
+        if (this.idResult !== undefined) {
+          result += this.idResult;
+          this.idResult = undefined;
+        }
+        if (this.classResult.length !== 0) {
+          result += this.classResult.join('');
+          this.classResult = [];
+        }
+        if (this.attrResult.length !== 0) {
+          result += this.attrResult.join('');
+          this.attrResult = [];
+        }
+        if (this.pseudoClassResult.length !== 0) {
+          result += this.pseudoClassResult.join('');
+          this.pseudoClassResult = [];
+        }
+        if (this.pseudoElementResult !== undefined) {
+          result += this.pseudoElementResult;
+          this.pseudoElementResult = undefined;
+        }
+        if (this.combineResult !== undefined) {
+          result += this.combineResult;
+          this.combineResult = undefined;
+        }
+        return result;
+      },
+    };
+    obj.classResult.push(`.${value}`);
+    return obj;
   },
 
-  attr(/* value */) {
-    throw new Error('Not implemented');
+  attr(value) {
+    const obj = {
+      errorFirst: 'Element, id and pseudo-element should not occur more then one time inside the selector',
+      errorSecond: 'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element',
+      elementResult: undefined,
+      idResult: undefined,
+      classResult: [],
+      attrResult: [],
+      pseudoClassResult: [],
+      pseudoElementResult: undefined,
+      combineResult: undefined,
+      element(value1) {
+        if (this.elementResult !== undefined) throw Error(this.errorFirst);
+        if (this.idResult !== undefined) {
+          throw Error(this.errorSecond);
+        } else if (this.classResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.attrResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.elementResult = value1;
+        return this;
+      },
+      id(value1) {
+        if (this.idResult !== undefined) throw Error(this.errorFirst);
+        if (this.classResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.attrResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.idResult = `#${value1}`;
+        return this;
+      },
+
+      class(value1) {
+        if (this.attrResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.classResult.push(`.${value1}`);
+        return this;
+      },
+
+      attr(value1) {
+        if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.attrResult.push(`[${value1}]`);
+        return this;
+      },
+
+      pseudoClass(value1) {
+        if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.pseudoClassResult.push(`:${value1}`);
+        return this;
+      },
+
+      pseudoElement(value1) {
+        if (this.pseudoElementResult !== undefined) throw Error(this.errorFirst);
+        this.pseudoElementResult = `::${value1}`;
+        return this;
+      },
+
+      combine(selector1, combinator, selector2) {
+        this.combineResult = `${selector1.stringify()} ${combinator} ${selector2.stringify()}`;
+        return this;
+      },
+      stringify() {
+        let result = '';
+        if (this.elementResult !== undefined) {
+          result += this.elementResult;
+          this.elementResult = undefined;
+        }
+        if (this.idResult !== undefined) {
+          result += this.idResult;
+          this.idResult = undefined;
+        }
+        if (this.classResult.length !== 0) {
+          result += this.classResult.join('');
+          this.classResult = [];
+        }
+        if (this.attrResult.length !== 0) {
+          result += this.attrResult.join('');
+          this.attrResult = [];
+        }
+        if (this.pseudoClassResult.length !== 0) {
+          result += this.pseudoClassResult.join('');
+          this.pseudoClassResult = [];
+        }
+        if (this.pseudoElementResult !== undefined) {
+          result += this.pseudoElementResult;
+          this.pseudoElementResult = undefined;
+        }
+        if (this.combineResult !== undefined) {
+          result += this.combineResult;
+          this.combineResult = undefined;
+        }
+        return result;
+      },
+    };
+    obj.attrResult.push(`[${value}]`);
+    return obj;
   },
 
-  pseudoClass(/* value */) {
-    throw new Error('Not implemented');
+  pseudoClass(value) {
+    const obj = {
+      errorFirst: 'Element, id and pseudo-element should not occur more then one time inside the selector',
+      errorSecond: 'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element',
+      elementResult: undefined,
+      idResult: undefined,
+      classResult: [],
+      attrResult: [],
+      pseudoClassResult: [],
+      pseudoElementResult: undefined,
+      combineResult: undefined,
+      element(value1) {
+        if (this.elementResult !== undefined) throw Error(this.errorFirst);
+        if (this.idResult !== undefined) {
+          throw Error(this.errorSecond);
+        } else if (this.classResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.attrResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.elementResult = value1;
+        return this;
+      },
+      id(value1) {
+        if (this.idResult !== undefined) throw Error(this.errorFirst);
+        if (this.classResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.attrResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.idResult = `#${value1}`;
+        return this;
+      },
+
+      class(value1) {
+        if (this.attrResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.classResult.push(`.${value1}`);
+        return this;
+      },
+
+      attr(value1) {
+        if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.attrResult.push(`[${value1}]`);
+        return this;
+      },
+
+      pseudoClass(value1) {
+        if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.pseudoClassResult.push(`:${value1}`);
+        return this;
+      },
+
+      pseudoElement(value1) {
+        if (this.pseudoElementResult !== undefined) throw Error(this.errorFirst);
+        this.pseudoElementResult = `::${value1}`;
+        return this;
+      },
+
+      combine(selector1, combinator, selector2) {
+        this.combineResult = `${selector1.stringify()} ${combinator} ${selector2.stringify()}`;
+        return this;
+      },
+      stringify() {
+        let result = '';
+        if (this.elementResult !== undefined) {
+          result += this.elementResult;
+          this.elementResult = undefined;
+        }
+        if (this.idResult !== undefined) {
+          result += this.idResult;
+          this.idResult = undefined;
+        }
+        if (this.classResult.length !== 0) {
+          result += this.classResult.join('');
+          this.classResult = [];
+        }
+        if (this.attrResult.length !== 0) {
+          result += this.attrResult.join('');
+          this.attrResult = [];
+        }
+        if (this.pseudoClassResult.length !== 0) {
+          result += this.pseudoClassResult.join('');
+          this.pseudoClassResult = [];
+        }
+        if (this.pseudoElementResult !== undefined) {
+          result += this.pseudoElementResult;
+          this.pseudoElementResult = undefined;
+        }
+        if (this.combineResult !== undefined) {
+          result += this.combineResult;
+          this.combineResult = undefined;
+        }
+        return result;
+      },
+    };
+    obj.pseudoClassResult.push(`:${value}`);
+    return obj;
   },
 
-  pseudoElement(/* value */) {
-    throw new Error('Not implemented');
+  pseudoElement(value) {
+    const obj = {
+      errorFirst: 'Element, id and pseudo-element should not occur more then one time inside the selector',
+      errorSecond: 'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element',
+      elementResult: undefined,
+      idResult: undefined,
+      classResult: [],
+      attrResult: [],
+      pseudoClassResult: [],
+      pseudoElementResult: undefined,
+      combineResult: undefined,
+      element(value1) {
+        if (this.elementResult !== undefined) throw Error(this.errorFirst);
+        if (this.idResult !== undefined) {
+          throw Error(this.errorSecond);
+        } else if (this.classResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.attrResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.elementResult = value1;
+        return this;
+      },
+      id(value1) {
+        if (this.idResult !== undefined) throw Error(this.errorFirst);
+        if (this.classResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.attrResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.idResult = `#${value1}`;
+        return this;
+      },
+
+      class(value1) {
+        if (this.attrResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.classResult.push(`.${value1}`);
+        return this;
+      },
+
+      attr(value1) {
+        if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.attrResult.push(`[${value1}]`);
+        return this;
+      },
+
+      pseudoClass(value1) {
+        if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.pseudoClassResult.push(`:${value1}`);
+        return this;
+      },
+
+      pseudoElement(value1) {
+        if (this.pseudoElementResult !== undefined) throw Error(this.errorFirst);
+        this.pseudoElementResult = `::${value1}`;
+        return this;
+      },
+
+      combine(selector1, combinator, selector2) {
+        this.combineResult = `${selector1.stringify()} ${combinator} ${selector2.stringify()}`;
+        return this;
+      },
+      stringify() {
+        let result = '';
+        if (this.elementResult !== undefined) {
+          result += this.elementResult;
+          this.elementResult = undefined;
+        }
+        if (this.idResult !== undefined) {
+          result += this.idResult;
+          this.idResult = undefined;
+        }
+        if (this.classResult.length !== 0) {
+          result += this.classResult.join('');
+          this.classResult = [];
+        }
+        if (this.attrResult.length !== 0) {
+          result += this.attrResult.join('');
+          this.attrResult = [];
+        }
+        if (this.pseudoClassResult.length !== 0) {
+          result += this.pseudoClassResult.join('');
+          this.pseudoClassResult = [];
+        }
+        if (this.pseudoElementResult !== undefined) {
+          result += this.pseudoElementResult;
+          this.pseudoElementResult = undefined;
+        }
+        if (this.combineResult !== undefined) {
+          result += this.combineResult;
+          this.combineResult = undefined;
+        }
+        return result;
+      },
+    };
+    obj.pseudoElementResult = `::${value}`;
+    return obj;
   },
 
-  combine(/* selector1, combinator, selector2 */) {
-    throw new Error('Not implemented');
+  combine(selector1, combinator, selector2) {
+    const obj = {
+      errorFirst: 'Element, id and pseudo-element should not occur more then one time inside the selector',
+      errorSecond: 'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element',
+      elementResult: undefined,
+      idResult: undefined,
+      classResult: [],
+      attrResult: [],
+      pseudoClassResult: [],
+      pseudoElementResult: undefined,
+      combineResult: undefined,
+      element(value1) {
+        if (this.elementResult !== undefined) throw Error(this.errorFirst);
+        if (this.idResult !== undefined) {
+          throw Error(this.errorSecond);
+        } else if (this.classResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.attrResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.elementResult = value1;
+        return this;
+      },
+      id(value1) {
+        if (this.idResult !== undefined) throw Error(this.errorFirst);
+        if (this.classResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.attrResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.idResult = `#${value1}`;
+        return this;
+      },
+
+      class(value1) {
+        if (this.attrResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.classResult.push(`.${value1}`);
+        return this;
+      },
+
+      attr(value1) {
+        if (this.pseudoClassResult.length !== 0) {
+          throw Error(this.errorSecond);
+        } else if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.attrResult.push(`[${value1}]`);
+        return this;
+      },
+
+      pseudoClass(value1) {
+        if (this.pseudoElementResult !== undefined) {
+          throw Error(this.errorSecond);
+        }
+        this.pseudoClassResult.push(`:${value1}`);
+        return this;
+      },
+
+      pseudoElement(value1) {
+        if (this.pseudoElementResult !== undefined) throw Error(this.errorFirst);
+        this.pseudoElementResult = `::${value1}`;
+        return this;
+      },
+
+      combine(selector11, combinator1, selector21) {
+        this.combineResult = `${selector11.stringify()} ${combinator1} ${selector21.stringify()}`;
+        return this;
+      },
+      stringify() {
+        let result = '';
+        if (this.elementResult !== undefined) {
+          result += this.elementResult;
+          this.elementResult = undefined;
+        }
+        if (this.idResult !== undefined) {
+          result += this.idResult;
+          this.idResult = undefined;
+        }
+        if (this.classResult.length !== 0) {
+          result += this.classResult.join('');
+          this.classResult = [];
+        }
+        if (this.attrResult.length !== 0) {
+          result += this.attrResult.join();
+          this.attrResult = [];
+        }
+        if (this.pseudoClassResult.length !== 0) {
+          result += this.pseudoClassResult.join();
+          this.pseudoClassResult = [];
+        }
+        if (this.pseudoElementResult !== undefined) {
+          result += this.pseudoElementResult;
+          this.pseudoElementResult = undefined;
+        }
+        if (this.combineResult !== undefined) {
+          result += this.combineResult;
+          this.combineResult = undefined;
+        }
+        return result;
+      },
+    };
+    obj.combineResult = `${selector1.stringify()} ${combinator} ${selector2.stringify()}`;
+    return obj;
   },
 };
 

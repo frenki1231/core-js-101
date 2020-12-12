@@ -429,7 +429,6 @@ function getCommonDirectoryPath(pathes) {
       return result.join('/');
     }
   }
-
   return result.join('/');
 }
 
